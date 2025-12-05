@@ -2,33 +2,10 @@ from datetime import datetime
 
 
 class Package:
-    """
-    Represents a delivery package.
-    
-    Attributes:
-        package_id (str): Unique identifier for the package
-        sender (str): Name of the sender
-        recipient_name (str): Name of the recipient
-        recipient_address (str): Delivery address
-        recipient_phone (str): Contact phone number
-        weight (float): Package weight in kg
-        category (str): Package category (Electronics, Documents, Food, etc.)
-        status (str): Current status (Pending, Out for Delivery, Delivered)
-        route_id (str): Assigned route ID (optional)
-        created_at (str): Creation timestamp
-        updated_at (str): Last update timestamp
-        delivered_at (str): Delivery timestamp (optional)
-        proof_of_delivery (str): Proof note (optional)
-    """
     
     def __init__(self, package_id, sender, recipient_name,
                  recipient_address, recipient_phone, weight,
                  category, status="Pending", route_id=None):
-        """
-        Initialize a new Package.
-        
-        TODO: Set all package attributes
-        """
         self.package_id = package_id
         self.sender = sender
         self.recipient_name = recipient_name
@@ -49,8 +26,6 @@ class Package:
         
         Returns:
             dict: Package data as dictionary
-        
-        TODO: Convert all attributes to a dictionary
         """
         return {
             'package_id': self.package_id,
@@ -78,8 +53,6 @@ class Package:
         
         Returns:
             Package: Package object
-        
-        TODO: Create Package from dictionary data
         """
         pkg = Package(
             data['package_id'],
@@ -104,8 +77,6 @@ class Package:
         
         Args:
             new_status: New status value
-        
-        TODO: Update status and timestamp
         """
         self.status = new_status
         self.updated_at = datetime.now().isoformat()
@@ -116,17 +87,6 @@ class Package:
 class Route:
     """
     Represents a delivery route.
-    
-    Attributes:
-        route_id (str): Unique identifier for the route
-        route_name (str): Name of the route
-        driver_name (str): Assigned driver name
-        driver_phone (str): Driver's phone number
-        date (str): Route date
-        package_ids (list): List of package IDs in this route
-        status (str): Route status (Active, Completed)
-        created_at (str): Creation timestamp
-        estimated_fuel (float): Estimated fuel usage in liters
     """
     
     def __init__(self, route_id, route_name, driver_name,
@@ -152,8 +112,6 @@ class Route:
         
         Returns:
             dict: Route data as dictionary
-        
-        TODO: Convert all attributes to a dictionary
         """
         return {
             'route_id': self.route_id,
@@ -174,11 +132,8 @@ class Route:
         
         Args:
             data (dict): Route data
-        
         Returns:
             Route: Route object
-        
-        TODO: Create Route from dictionary data
         """
         route = Route(
             data['route_id'],
@@ -199,8 +154,6 @@ class Route:
         
         Args:
             package_id: Package ID to add
-        
-        TODO: Add package ID to the route's package list
         """
         if package_id not in self.package_ids:
             self.package_ids.append(package_id)
@@ -211,8 +164,6 @@ class Route:
         
         Args:
             package_id: Package ID to remove
-        
-        TODO: Remove package ID from the route's package list
         """
         if package_id in self.package_ids:
             self.package_ids.remove(package_id)
