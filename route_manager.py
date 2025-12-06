@@ -1,145 +1,74 @@
-"""
-FreshRoute Logistics - Route Management
-Assigned to: JOHN KERBY
-
-TODO: Implement all route management functions.
-"""
-
-from database_packages import PackageDatabase
-from database_routes import RouteDatabase
-from models import Route
-import utils
 
 
-def create_route(route_db):
-    """
-    Create a new delivery route.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-    
-    TODO:
-    1. Generate route ID
-    2. Get route details (name, driver, date)
-    3. Validate input
-    4. Create Route object
-    5. Save to database
-    """
-    # TODO: Implement route creation
-    pass
+from datetime import datetime
 
+class RouteManager:
+    def __init__(self):
+        # Stores all routes
+        # Format: {route_id: {"driver": str, "packages": [], "created_at": datetime}}
+        self.routes = {}
 
-def view_all_routes(route_db):
-    """
-    Display all routes in a table format.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-    
-    TODO: Get all routes and display in formatted table
-    """
-    # TODO: Implement view all routes
-    pass
+    # 1. Create a new delivery route
 
+    def create_route(self, route_id, driver_name):
+        if route_id in self.routes:
+            return f"Route {route_id} already exists."
 
-def view_route_details(route_db, package_db):
-    """
-    View detailed information about a specific route.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-        package_db (PackageDatabase): Package database instance
-    
-    TODO:
-    1. Get route ID from user
-    2. Load route details
-    3. Load packages in this route
-    4. Display route and package information
-    """
-    # TODO: Implement view route details
-    pass
+        self.routes[route_id] = {
+            "driver": driver_name,
+            "packages": [],
+            "created_at": datetime.now()
+        }
+        return f"Route {route_id} created successfully."
 
+    # 2. Assign a package to a route
 
-def assign_packages_to_route(route_db, package_db):
-    """
-    Assign packages to a route.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-        package_db (PackageDatabase): Package database instance
-    
-    TODO:
-    1. Get route ID
-    2. Show unassigned packages
-    3. Let user select packages
-    4. Update package route_id
-    5. Update route package_ids list
-    """
-    # TODO: Implement package assignment
-    pass
+    def add_package_to_route(self, route_id, package_id):
+        if route_id not in self.routes:
+            return f"Route {route_id} does not exist."
 
+        self.routes[route_id]["packages"].append(package_id)
+        return f"Package {package_id} assigned to route {route_id}."
 
-def assign_driver_to_route(route_db):
-    """
-    Assign or change driver for a route.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-    
-    TODO:
-    1. Get route ID
-    2. Get new driver details
-    3. Update route
-    """
-    # TODO: Implement driver assignment
-    pass
+    # 3. Remove a package from a route
 
+    def remove_package_from_route(self, route_id, package_id):
+        if route_id not in self.routes:
+            return f"Route {route_id} does not exist."
 
-def edit_route(route_db):
-    """
-    Edit route details.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-    
-    TODO:
-    1. Get route ID
-    2. Show current details
-    3. Get new details
-    4. Update database
-    """
-    # TODO: Implement route editing
-    pass
+        if package_id not in self.routes[route_id]["packages"]:
+            return f"Package {package_id} is not in this route."
 
+        self.routes[route_id]["packages"].remove(package_id)
+        return f"Package {package_id} removed from route {route_id}."
 
-def delete_route(route_db, package_db):
-    """
-    Delete a route from the system.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-        package_db (PackageDatabase): Package database instance
-    
-    TODO:
-    1. Get route ID
-    2. Show route details
-    3. Confirm deletion
-    4. Unassign packages from this route
-    5. Delete route
-    """
-    # TODO: Implement route deletion
-    pass
+    # 4. Assign/Change driver for a route
 
+    def assign_driver(self, route_id, driver_name):
+        if route_id not in self.routes:
+            return f"Route {route_id} does not exist."
 
-def route_management_menu(route_db, package_db):
-    """
-    Display route management menu and handle user choices.
-    
-    Args:
-        route_db (RouteDatabase): Route database instance
-        package_db (PackageDatabase): Package database instance
-    
-    TODO: Create menu loop with all route operations
-    """
-    # TODO: Implement route menu
-    pass
+        self.routes[route_id]["driver"] = driver_name
+        return f"Driver updated for route {route_id}."
+
+    # 5. View route details (driver + packages)
+   
+    def view_route(self, route_id):
+        if route_id not in self.routes:
+            return f"Route {route_id} does not exist."
+
+        return self.routes[route_id]
+  
+    # 6. View all routes (summary)
+
+    def list_routes(self):
+        return self.routes
+
+    # 7. Delete a route
+
+    def delete_route(self, route_id):
+        if route_id not in self.routes:
+            return f"Route {route_id} does not exist."
+
+        del self.routes[route_id]
+        return f"Route {route_id} deleted successfully."
