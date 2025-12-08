@@ -1,8 +1,9 @@
 """
 FreshRoute Logistics - Route Database Operations
-Assigned to: NATHANIEL
+Author: Nathaniel
 
-TODO: Implement all route database operations (CRUD).
+JSON-based storage for all route-related data.
+Handles creating, reading, updating, and deleting routes.
 """
 
 import json
@@ -11,152 +12,103 @@ from models import Route
 
 
 class RouteDatabase:
-    """Handles route data storage and retrieval using JSON file."""
-    
+    """Manages all route data using a simple JSON file."""
+
     def __init__(self, data_dir="data"):
-        """
-        Initialize route database.
-        
-        Args:
-            data_dir (str): Directory for data files
-        
-        TODO: Set up database file path and initialize
-        """
         self.data_dir = data_dir
-        self.routes_file = os.path.join(data_dir, "routes.json")
-        # TODO: Call initialization method
-    
-    def _initialize(self):
-        """
-        Create data directory and file if they don't exist.
-        
-        TODO: Create directory and empty routes.json file
-        """
-        # TODO: Implement initialization
-        pass
-    
+        self.routes_file = os.path.join(self.data_dir, "routes.json")
+        self._setup_storage()
+
+    def _setup_storage(self):
+        """Make sure the data folder and JSON file exist."""
+        os.makedirs(self.data_dir, exist_ok=True)
+
+        if not os.path.exists(self.routes_file):
+            with open(self.routes_file, "w") as file:
+                json.dump([], file, indent=4)
+
     def _read_routes(self):
-        """
-        Read routes from JSON file.
-        
-        Returns:
-            list: List of route dictionaries
-        
-        TODO: Read and parse JSON file
-        """
-        # TODO: Implement reading from JSON
-        pass
-    
-    def _write_routes(self, routes_data):
-        """
-        Write routes to JSON file.
-        
-        Args:
-            routes_data (list): List of route dictionaries
-        
-        TODO: Write data to JSON file with proper formatting
-        """
-        # TODO: Implement writing to JSON
-        pass
-    
+        """Load routes from the JSON file."""
+        try:
+            with open(self.routes_file, "r") as file:
+                return json.load(file)
+        except (json.JSONDecodeError, FileNotFoundError):
+            return []
+
+    def _write_routes(self, routes):
+        """Write updated route data back to the file."""
+        try:
+            with open(self.routes_file, "w") as file:
+                json.dump(routes, file, indent=4)
+        except Exception as err:
+            print("Error saving route data:", err)
+
+
+    # CRUD FUNCTIONS
+
     def get_all_routes(self):
-        """
-        Get all routes from database.
-        
-        Returns:
-            List[Route]: List of Route objects
-        
-        TODO: Read JSON and convert to Route objects
-        """
-        # TODO: Implement getting all routes
-        pass
-    
+        """Return all saved routes as Route objects."""
+        data = self._read_routes()
+        return [Route(**r) for r in data]
+
     def get_route_by_id(self, route_id):
-        """
-        Get a specific route by ID.
-        
-        Args:
-            route_id: Route ID to search for
-        
-        Returns:
-            Route object if found, None otherwise
-        
-        TODO: Search for route by ID
-        """
-        # TODO: Implement get by ID
-        pass
-    
+        """Find a route by ID. Returns None if not found."""
+        data = self._read_routes()
+        for r in data:
+            if str(r.get("route_id")) == str(route_id):
+                return Route(**r)
+        return None
+
     def add_route(self, route):
+        """Add a new route.
+        Returns True if successful, False if the ID already exists.
         """
-        Add a new route to database.
-        
-        Args:
-            route: Route object to add
-        
-        Returns:
-            bool: True if successful, False otherwise
-        
-        TODO: Add route to JSON file (check for duplicates)
-        """
-        # TODO: Implement adding route
-        pass
-    
+        data = self._read_routes()
+
+        # avoid duplicates
+        if any(str(r.get("route_id")) == str(route.route_id) for r in data):
+            return False
+
+        data.append(route.to_dict())
+        self._write_routes(data)
+        return True
+
     def update_route(self, route):
-        """
-        Update an existing route.
-        
-        Args:
-            route: Route object with updated data
-        
-        Returns:
-            bool: True if successful, False otherwise
-        
-        TODO: Update route in JSON file
-        """
-        # TODO: Implement updating route
-        pass
-    
+        """Update an existing route using its route_id."""
+        data = self._read_routes()
+
+        for index, r in enumerate(data):
+            if str(r.get("route_id")) == str(route.route_id):
+                data[index] = route.to_dict()
+                self._write_routes(data)
+                return True
+
+        return False
+
     def delete_route(self, route_id):
-        """
-        Delete a route by ID.
-        
-        Args:
-            route_id: Route ID to delete
-        
-        Returns:
-            bool: True if successful, False otherwise
-        
-        TODO: Remove route from JSON file
-        """
-        # TODO: Implement deleting route
-        pass
-    
+        """Delete a route by ID."""
+        data = self._read_routes()
+        new_data = [r for r in data if str(r.get("route_id")) != str(route_id)]
+
+        if len(new_data) == len(data):
+            return False  # nothing removed
+
+        self._write_routes(new_data)
+        return True
+
+
+    # FILTERS / SEARCH HELPERS
+
     def get_routes_by_date(self, date):
-        """
-        Get all routes for a specific date.
-        
-        Args:
-            date: Date to filter by (YYYY-MM-DD)
-        
-        Returns:
-            List of matching routes
-        
-        TODO: Filter routes by date
-        """
-        # TODO: Implement filtering by date
-        pass
-    
+        """Get all routes scheduled on a specific date."""
+        data = self._read_routes()
+        return [Route(**r) for r in data if r.get("date") == date]
+
     def get_routes_by_driver(self, driver_name):
-        """
-        Get all routes assigned to a specific driver.
-        
-        Args:
-            driver_name: Driver name to filter by
-        
-        Returns:
-            List of matching routes
-        
-        TODO: Filter routes by driver
-        """
-        # TODO: Implement filtering by driver
-        pass
+        """Get all routes assigned to a given driver."""
+        data = self._read_routes()
+        return [
+            Route(**r)
+            for r in data
+            if r.get("driver", "").lower() == driver_name.lower()
+        ]
