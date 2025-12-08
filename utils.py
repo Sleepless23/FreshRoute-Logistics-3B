@@ -1,6 +1,6 @@
 """
 FreshRoute Logistics - Utility Functions
-Assigned to: NIVAN
+Assigned to: NIVAN and ADRIAN
 
 TODO: Implement all utility and helper functions.
 """
@@ -8,6 +8,7 @@ TODO: Implement all utility and helper functions.
 import re
 from datetime import datetime
 
+# > ------------------------------------ NIVAN PART START HERE -------------------------------- <
 
 # ===== INPUT FUNCTIONS =====
 
@@ -178,6 +179,10 @@ def format_date(date_str):
     # TODO: Implement date formatting
     pass
 
+# > ------------------------------------ NIVAN PART ENDS HERE -------------------------------- <
+
+# > --------------------------------- ADRIAN PART STARTS HERE -------------------------------- <
+
 
 def truncate_string(text, max_length):
     """
@@ -295,3 +300,6 @@ def generate_id(prefix, existing_ids):
     """
     # TODO: Implement generate_id
     pass
+
+
+# > ------------------------------------ ADRIAN PART ENDS HERE -------------------------------- <

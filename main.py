@@ -1,6 +1,6 @@
 """
 FreshRoute Logistics - Main Application
-Assigned to: JOHN BRETT
+Assigned to: ALLEN
 
 TODO: Implement main application flow and integrate all modules.
 """
