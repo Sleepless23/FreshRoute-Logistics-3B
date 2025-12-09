@@ -25,9 +25,10 @@ def get_input(prompt, default=None):
     
     TODO: Implement input with default value support
     """
-    # TODO: Implement get_input
-    pass
-
+    if default:
+        value = input(f"{prompt} [{default}]: ")
+        return value if value else default
+    return input(f"{prompt}: ")
 
 def get_number_input(prompt, min_val=0, max_val=float('inf')):
     """
@@ -43,8 +44,18 @@ def get_number_input(prompt, min_val=0, max_val=float('inf')):
     
     TODO: Implement numeric input with range validation
     """
-    # TODO: Implement get_number_input
-    pass
+    while True:
+        value = input (f"{prompt}: ")
+        if not value:
+            return None
+        try:
+            num = float(value)
+            if min_val <= num <= max_val:
+                return num
+            else:
+                print(f"Please enter a number between {min_val} and {max_val}.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
 
 
 def get_choice(prompt, valid_choices):
@@ -60,8 +71,12 @@ def get_choice(prompt, valid_choices):
     
     TODO: Implement choice selection with validation
     """
-    # TODO: Implement get_choice
-    pass
+    while True:
+        choice = input(f"{prompt} {valid_choices}: ")
+        if choice in valid_choices:
+            return choice
+        else:
+            print("Invalid choice. Please try again.")
 
 
 def get_date_input(prompt):
@@ -76,8 +91,13 @@ def get_date_input(prompt):
     
     TODO: Implement date input with format validation
     """
-    # TODO: Implement get_date_input
-    pass
+    while True:
+        date_str = input(f"{prompt} (YYYY-MM-DD): ")
+        try:
+            datetime.striptime(date_str, "%Y-%m-%d")
+            return date_str
+        except ValueError:
+            print("Invalid date format. Please enter date as YYYY-MM-DD.")
 
 
 def confirm_action(message):
@@ -92,9 +112,8 @@ def confirm_action(message):
     
     TODO: Implement yes/no confirmation
     """
-    # TODO: Implement confirm_action
-    pass
-
+    choose = input(f"{message} (y/n): ").lower()
+    return choose == 'y'
 
 # ===== VALIDATION FUNCTIONS =====
 
@@ -110,8 +129,8 @@ def validate_phone(phone):
     
     TODO: Check if phone has at least 10 digits
     """
-    # TODO: Implement phone validation
-    pass
+    digits = re.sub (r'\D', '', phone)
+    return len(digits) >= 10
 
 
 def validate_package_id(package_id):
@@ -126,9 +145,7 @@ def validate_package_id(package_id):
     
     TODO: Check if package ID format is correct
     """
-    # TODO: Implement package ID validation
-    pass
-
+    return len(package_id) > 0
 
 # ===== FORMATTING FUNCTIONS =====
 
@@ -144,9 +161,10 @@ def format_phone(phone):
     
     TODO: Format phone number nicely
     """
-    # TODO: Implement phone formatting
-    pass
-
+    digits = re.sub (r'\D', '', phone)
+    if len(digits) >= 10:
+        return f"({digits[:3]}) {digits[3:6]}-{digits[6:10]}"
+    return phone
 
 def format_weight(weight):
     """
@@ -160,8 +178,7 @@ def format_weight(weight):
     
     TODO: Format weight as "X.XX kg"
     """
-    # TODO: Implement weight formatting
-    pass
+    return f"{weight:.2f} kg"
 
 
 def format_date(date_str):
@@ -176,9 +193,13 @@ def format_date(date_str):
     
     TODO: Convert ISO date to readable format
     """
-    # TODO: Implement date formatting
-    pass
-
+    if not date_str:
+        return "N/A"
+    try:
+        date_obj = datetime.fromisoformat(date_str)
+        return date_obj.strftime("%B %d, %Y %H:%M")
+    except:
+        return date_str
 # > ------------------------------------ NIVAN PART ENDS HERE -------------------------------- <
 
 # > --------------------------------- ADRIAN PART STARTS HERE -------------------------------- <
