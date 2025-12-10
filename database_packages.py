@@ -24,7 +24,7 @@ class PackageDatabase:
         """
         self.data_dir = data_dir
         self.packages_file = os.path.join(data_dir, "packages.json")
-        # TODO: Call initialization method
+        self._initialize()
     
     def _initialize(self):
         """
@@ -32,8 +32,11 @@ class PackageDatabase:
         
         TODO: Create directory and empty packages.json file
         """
-        # TODO: Implement initialization
-        pass
+        if not os.path.exists(self.data_dir):
+            os.makedirs(self.data_dir)
+        if not os.path.exists(self.packages_file):
+            with open(self.packages_file, 'w') as f:
+                json.dump([], f)
     
     def _read_packages(self):
         """
@@ -44,8 +47,8 @@ class PackageDatabase:
         
         TODO: Read and parse JSON file
         """
-        # TODO: Implement reading from JSON
-        pass
+        with open(self.packages_file, 'r') as f:
+            return json.load(f)
     
     def _write_packages(self, packages_data):
         """
@@ -56,8 +59,8 @@ class PackageDatabase:
         
         TODO: Write data to JSON file with proper formatting
         """
-        # TODO: Implement writing to JSON
-        pass
+        with open(self.packages_file, 'w') as f:
+            json.dump(packages_data, f, indent=2)
     
     def get_all_packages(self):
         """
@@ -68,8 +71,8 @@ class PackageDatabase:
         
         TODO: Read JSON and convert to Package objects
         """
-        # TODO: Implement getting all packages
-        pass
+        data = self._read_packages()
+        return [Package.from_dict(pkg) for pkg in data]
     
     def get_package_by_id(self, package_id):
         """
@@ -83,8 +86,11 @@ class PackageDatabase:
         
         TODO: Search for package by ID
         """
-        # TODO: Implement get by ID
-        pass
+        packages = self.get_all_packages()
+        for pkg in packages:
+            if pkg.package_id == package_id:
+                return pkg
+        return None
     
     def add_package(self, package):
         """
@@ -98,8 +104,13 @@ class PackageDatabase:
         
         TODO: Add package to JSON file (check for duplicates)
         """
-        # TODO: Implement adding package
-        pass
+        data = self._read_packages()
+        for pkg in data:
+            if pkg['package_id'] == package.package_id:
+                return False
+        data.append(package.to_dict())
+        self._write_packages(data)
+        return True
     
     def update_package(self, package):
         """
@@ -113,8 +124,13 @@ class PackageDatabase:
         
         TODO: Update package in JSON file
         """
-        # TODO: Implement updating package
-        pass
+        data = self._read_packages()
+        for i, pkg in enumerate(data):
+            if pkg['package_id'] == package.package_id:
+                data[i] = package.to_dict()
+                self._write_packages(data)
+                return True
+        return False
     
     def delete_package(self, package_id):
         """
@@ -128,8 +144,13 @@ class PackageDatabase:
         
         TODO: Remove package from JSON file
         """
-        # TODO: Implement deleting package
-        pass
+        data = self._read_packages()
+        for i, pkg in enumerate(data):
+            if pkg['package_id'] == package_id:
+                data.pop(i)
+                self._write_packages(data)
+                return True
+        return False
     
     def get_packages_by_status(self, status):
         """
@@ -143,8 +164,8 @@ class PackageDatabase:
         
         TODO: Filter packages by status
         """
-        # TODO: Implement filtering by status
-        pass
+        packages = self.get_all_packages()
+        return [pkg for pkg in packages if pkg.status == status]
     
     def get_packages_by_route(self, route_id):
         """
@@ -158,8 +179,8 @@ class PackageDatabase:
         
         TODO: Filter packages by route ID
         """
-        # TODO: Implement filtering by route
-        pass
+        packages = self.get_all_packages()
+        return [pkg for pkg in packages if pkg.route_id == route_id]
     
     def get_unassigned_packages(self):
         """
@@ -170,5 +191,5 @@ class PackageDatabase:
         
         TODO: Filter packages without route assignment
         """
-        # TODO: Implement getting unassigned packages
-        pass
+        packages = self.get_all_packages()
+        return [pkg for pkg in packages if pkg.route_id is None]
