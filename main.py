@@ -2,7 +2,7 @@
 FreshRoute Logistics - Main Application
 Assigned to: ALLEN
 
-TODO: Implement main application flow and integrate all modules.
+Main application flow integrating all system modules.
 """
 
 from database_packages import PackageDatabase
@@ -14,65 +14,83 @@ import reports
 import utils
 
 
-class FreshRouteApp:
-    """Main application class for FreshRoute Logistics System."""
-    
-    def __init__(self):
-        """
-        Initialize the application and databases.
-        
-        TODO: Initialize package and route databases
-        """
-        # TODO: Create database instances
-        pass
-    
-    def show_welcome(self):
-        """
-        Display welcome screen.
-        
-        TODO: Show welcome message and system info
-        """
-        # TODO: Implement welcome screen
-        pass
-    
-    def show_main_menu(self):
-        """
-        Display main menu options.
-        
-        TODO: Show main menu with all system features
-        """
-        # TODO: Implement main menu display
-        pass
-    
-    def run(self):
-        """
-        Main application loop.
-        
-        TODO:
-        1. Show welcome screen
-        2. Loop main menu
-        3. Handle user choices:
-           - Package Management
-           - Route Management
-           - Delivery Tracking
-           - Reports
-           - Exit
-        """
-        # TODO: Implement main loop
-        pass
-
-
 def main():
-    """
-    Entry point of the application.
-    
-    TODO:
-    1. Create FreshRouteApp instance
-    2. Run the application
-    3. Handle any errors gracefully
-    """
-    # TODO: Implement main function
-    pass
+    package_db = PackageDatabase()
+    route_db = RouteDatabase()
+
+    while True:
+        utils.clear_screen()
+        utils.print_header("FreshRoute Logistics System")
+
+        print("Main Menu:")
+        print("1. Package Management")
+        print("2. Route Management")
+        print("3. Delivery Tracking")
+        print("4. Reports")
+        print("5. Exit")
+
+        choice = input("\nEnter your choice: ")
+
+        if choice == "1":
+            package_manager.package_management_menu(package_db)
+
+        elif choice == "2":
+            route_manager.route_management_menu(route_db, package_db)
+
+        elif choice == "3":
+            tracking.tracking_menu(package_db, route_db)
+
+        elif choice == "4":
+            show_reports_menu(package_db, route_db)
+
+        elif choice == "5":
+            print("Exiting system...")
+            break
+
+        else:
+            utils.print_error("Invalid choice. Try again.")
+            utils.pause()
+
+
+def show_reports_menu(package_db, route_db):
+    while True:
+        utils.clear_screen()
+        utils.print_header("Reports Menu")
+
+        print("1. Packages Delivered per Day")
+        print("2. Driver Performance Report")
+        print("3. Delayed Deliveries Report")
+        print("4. Fuel Usage Estimates")
+        print("5. Problematic Addresses Report")
+        print("6. Summary Statistics")
+        print("0. Back to Main Menu")
+
+        choice = input("\nEnter your choice: ")
+
+        if choice == "1":
+            reports.report_packages_delivered_per_day(package_db)
+
+        elif choice == "2":
+            reports.report_driver_performance(route_db, package_db)
+
+        elif choice == "3":
+            reports.report_delayed_deliveries(package_db)
+
+        elif choice == "4":
+            reports.report_fuel_usage_estimates(route_db)
+
+        elif choice == "5":
+            reports.report_problematic_addresses(package_db)
+
+        elif choice == "6":
+            reports.generate_summary_statistics(package_db, route_db)
+
+        elif choice == "0":
+            break
+
+        else:
+            utils.print_error("Invalid choice. Try again.")
+            utils.pause()
 
 
 if __name__ == "__main__":
