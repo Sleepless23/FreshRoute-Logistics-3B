@@ -7,7 +7,7 @@
 - Define Route class
 - Define data conversion methods
 
-### **Allen** - Package Database Operations (`database_packages.py`)
+### **John Brett** - Package Database Operations (`database_packages.py`)
 - Implement package CRUD operations
 - Handle package JSON file operations
 
@@ -15,7 +15,7 @@
 - Implement route CRUD operations
 - Handle route JSON file operations
 
-### **Nivan** - Utility Functions (`utils.py`)
+### **Nivan and Adrian** - Utility Functions (`utils.py`)
 - Input validation functions
 - Display formatting functions
 - Helper utilities
@@ -40,7 +40,7 @@
 - Export to CSV/PDF
 - Performance analytics
 
-### **John Brett** - Main Application (`main.py`)
+### **Allen** - Main Application (`main.py`)
 - Menu system
 - Application flow
 - Module integration
@@ -53,11 +53,11 @@
 Fresh-Assignment/
 ├── README.md                      # This file
 ├── IMPLEMENTATION_GUIDE.md        # Detailed implementation guide
-├── main.py                        # Main application (John Brett)
+├── main.py                        # Main application (Allen)
 ├── models.py                      # Data models (Daniel)
-├── database_packages.py           # Package DB (Allen)
+├── database_packages.py           # Package DB (John Brett)
 ├── database_routes.py             # Route DB (Nathaniel)
-├── utils.py                       # Utilities (Nivan)
+├── utils.py                       # Utilities (Nivan and Adrian)
 ├── package_manager.py             # Package management (Richard)
 ├── route_manager.py               # Route management (John Kerby)
 ├── tracking.py                    # Tracking (Franchesca)
@@ -75,9 +75,9 @@ Fresh-Assignment/
 models.py (Daniel)
     |
     V
-database_packages.py (Allen)
+database_packages.py (John Brett)
 database_routes.py (Nathaniel)
-utils.py (Nivan)
+utils.py (Nivan and Adrian)
     |
     V
 package_manager.py (Richard)
@@ -86,14 +86,14 @@ tracking.py (Franchesca)
 reports.py (Lester)
     |
     V
-main.py (John Brett)
+main.py (Allen)
 ```
 
 ---
 
 ## Implementation Order
 
-1. Daniel, Allen, Nathaniel, Nivan  
+1. Daniel, John Brett, Nathaniel, Nivan  
 2. Richard, John Kerby, Franchesca, Lester  
-3. John Brett (integration)
+3. Allen (integration)
 
