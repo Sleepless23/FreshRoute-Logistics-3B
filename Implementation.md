@@ -45,6 +45,11 @@
 - Application flow
 - Module integration
 
+### **Sharly** - Unit Tests (`test_system.py`)
+- Write unit tests for models
+- Test package and route functionality
+- Ensure code quality
+
 ---
 
 ## File Structure
@@ -62,6 +67,7 @@ Fresh-Assignment/
 ├── route_manager.py               # Route management (John Kerby)
 ├── tracking.py                    # Tracking (Franchesca)
 ├── reports.py                     # Reports (Lester)
+├── test_system.py                 # Unit tests (Sharly)
 └── data/                          # Auto-generated JSON files
     ├── packages.json
     └── routes.json
@@ -96,4 +102,4 @@ main.py (Allen)
 1. Daniel, John Brett, Nathaniel, Nivan  
 2. Richard, John Kerby, Franchesca, Lester  
 3. Allen (integration)
-
+4. Sharly (testing & validation)
